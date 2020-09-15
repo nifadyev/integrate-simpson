@@ -7,7 +7,7 @@ import numpy as np
 import click
 
 
-def function(x):
+def function(x: float) -> float:
     """Find function's result with specified argument.
 
     Args:
@@ -20,7 +20,7 @@ def function(x):
     return (x**2 + 3 * x) / (x + 1) + np.cos(x)
 
 
-def calculate_max_forth_derivative(low, high):
+def calculate_max_forth_derivative(low: float, high: float) -> float:
     """Calculate forth derivative of specified function.
 
     Set high argument instead of `x` in numerator and
@@ -40,7 +40,8 @@ def calculate_max_forth_derivative(low, high):
         - (24 * (2*high + 3)) / (low + 1)**4
 
 
-def calculate_integration_error(max_forth_derivative, low, high, length):
+def calculate_integration_error(
+        max_forth_derivative: float, low: float, high: float, length: int) -> float:
     """Find integration error if Simpson method is used.
 
     Args:
@@ -57,7 +58,8 @@ def calculate_integration_error(max_forth_derivative, low, high, length):
     return (step)**4 / 180 * max_forth_derivative * (high - low)
 
 
-def express_step_from_error(error, max_forth_derivative, low, high):
+def express_step_from_error(
+        error: float, max_forth_derivative: float, low: float, high: float) -> float:
     """Get step from known integration error using it's formula.
 
     Args:
@@ -70,32 +72,25 @@ def express_step_from_error(error, max_forth_derivative, low, high):
         float: distance between values in range.
 
     """
-    # ! Probably invalid calculation, hack - *20
     return ((error) / 180 * max_forth_derivative * (high - low))**0.25 * 20
 
 
 @click.command()
-@click.option(
-    '--range_start', type=float, default=0.0, help='Left range boundary')
-@click.option(
-    '--range_end', type=float, default=1.0, help='Right range boundary')
-@click.option(
-    '--range_length', type=int, default=10, help='Number of values in range')
-def main(range_start, range_end, range_length):
+@click.option('--range_start', type=float, default=0.0, help='Left range boundary')
+@click.option('--range_end', type=float, default=1.0, help='Right range boundary')
+@click.option('--range_length', type=int, default=10, help='Number of values in range')
+def main(range_start: float, range_end: float, range_length: int) -> None:
     """Integrate function using Simpson method.
 
     Range is set by user or default range is used.
     """
     values = np.linspace(range_start, range_end, range_length)
     result = simps(function(values), values)
-    max_forth_derivative = calculate_max_forth_derivative(
-        range_start, range_end)
-    error = calculate_integration_error(
-        max_forth_derivative, range_start, range_end, range_length)
-    step = express_step_from_error(
-        error, max_forth_derivative, range_start, range_end)
+    max_forth_derivative = calculate_max_forth_derivative(range_start, range_end)
+    error = calculate_integration_error(max_forth_derivative, range_start, range_end, range_length)
+    step = express_step_from_error(error, max_forth_derivative, range_start, range_end)
 
-    first_values = ", ".join(f'{value:5.5f}' for value in islice(values, 10))
+    first_values = ', '.join(f'{value:5.5f}' for value in islice(values, 10))
     first_values_length = 10 if len(values) > 10 else len(values)
 
     print('Function: (x^2 + 3 * x) / (x + 1) + cos(x), '
