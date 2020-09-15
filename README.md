@@ -1,5 +1,7 @@
 # Integrate Simpson
 
+![](https://img.shields.io/badge/python-v3.8-blue) ![](https://img.shields.io/badge/numpy-1.17.4-blue) ![](https://img.shields.io/badge/scipy-1.3.2-blue) ![](https://img.shields.io/badge/platform-windows%20%7C%20linux-lightgrey) ![](https://img.shields.io/badge/license-MIT-green)
+
 Tool for integrating function using Simpson method.
 
 ## Requirements
@@ -8,19 +10,12 @@ Tool for integrating function using Simpson method.
 - virtualenv (optional)
 
 ### Pip packages
-To install required packages use one of commands below
+Install required packages using `virtualenv`
 
-### Optional
-
-Create `virtualenv` and enter it
-
-`python3.8 -m virtualenv env && source env/bin/activate`
-
-#### Linux
-`python -m pip install -r requirements.txt`
-
-#### Windows
-TODO
+```bash
+python -m virtualenv env && source env/bin/activate
+python -m pip install -r requirements.txt
+```
 
 ## Usage
 
